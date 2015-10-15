@@ -81,11 +81,13 @@ public class Player : MonoBehaviour
     } else {
       isWalking = false;
     }
-    GetComponent<Rigidbody>().velocity = new Vector3(vx, v.y, vz);
+    GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(vx, v.x, 0.5f), 
+                                                     v.y,
+                                                     Mathf.Lerp(vz, v.z, 0.5f));
 
   	// rotate player towards correct direction
     float y = GetComponent<Transform>().eulerAngles.y;
-  	GetComponent<Transform>().eulerAngles = new Vector3(0f, 0.5f * yRotation + 0.5f * y, 0f);
+  	GetComponent<Transform>().eulerAngles = new Vector3(0f, Mathf.Lerp(yRotation, y, 0.1f), 0f);
 		
 	}
 

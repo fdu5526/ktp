@@ -10,7 +10,7 @@ public class Player : MonoBehaviour
   bool isDisabled;
 
   // player movement variables
-  const float defaultSpeed = 15f;
+  const float defaultSpeed = 20f;
   const float sqrtRoot2 = 1.414f;
   float yRotation;
   bool isWalking;
@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
 
 	// get player keyboard input, do things
-	void CheckMovement() {
+	void Move() {
 		Vector3 v = GetComponent<Rigidbody>().velocity;
     isWalking = true;
 
@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
   // do physics stuff
   void FixedUpdate () {
     if (!isDisabled) {
-      CheckMovement();
+      Move();
       StepSounds();
     }
   }	

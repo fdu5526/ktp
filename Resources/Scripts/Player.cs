@@ -34,7 +34,7 @@ public class Player : MonoBehaviour
 
 
 	// get player keyboard input, do things
-	void Move() {
+	void CheckMovement() {
 		Vector3 v = GetComponent<Rigidbody>().velocity;
     isWalking = true;
 
@@ -106,7 +106,7 @@ public class Player : MonoBehaviour
   // do physics stuff
   void FixedUpdate () {
     if (!isDisabled) {
-      Move();
+      CheckMovement();
       StepSounds();
     }
   }	

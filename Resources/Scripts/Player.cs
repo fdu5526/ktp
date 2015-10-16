@@ -3,16 +3,14 @@ using UnityEngine.UI;
 using System;
 using System.Collections;
 
-public class Player : MonoBehaviour 
+public class Player : SwarmMember 
 {
 
   // can we do things
   bool isDisabled;
-  Timer hitStunTimer;
 
   // player movement variables
   const float defaultSpeed = 20f;
-  const float sqrtRoot2 = 1.414f;
   float yRotation;
   bool isWalking;
 
@@ -20,8 +18,6 @@ public class Player : MonoBehaviour
   string[] wasdStrings = {"w", "a", "s", "d"};
   bool[] wasdInput;
   
-  // audios
-  AudioSource[] audios;
 
 ///////////////////////////////////////////////////////////////////////////////////////////  
 
@@ -29,10 +25,9 @@ public class Player : MonoBehaviour
 	void Start () {
     isDisabled = false;
     isWalking = false;
-		audios = GetComponents<AudioSource>();
     wasdInput = new bool[wasdStrings.Length];
 
-    hitStunTimer = new Timer(1f);
+    base.Initialize();
 	}
 
 
@@ -97,7 +92,7 @@ public class Player : MonoBehaviour
   // play stepping sounds when moving 
   void StepSounds () {
 
-    if (isWalking) {
+    if (currentState == State.RunToward || currentState == State.Encircle) {
       
     } else {
 
@@ -105,23 +100,12 @@ public class Player : MonoBehaviour
   }
 
 
-  void OnCollisionEnter(Collision collision) {
-    int l = collision.gameObject.layer;
-    if (l == Helper.ktpLayer) {
-      isDisabled = true;
-      GetComponent<Rigidbody>().AddForce(Vector3.up * 1000f);
-    } else if (isDisabled && l == Helper.groundLayer) {
-      isDisabled = false;
-      hitStunTimer.Reset(Time.time);
-    }
-  }
-
 
 
   // do physics stuff
   void FixedUpdate () {
 
-    if (!isDisabled && hitStunTimer.IsOffCooldown(Time.time)) {
+    if (currentState != State.Disabled && hitStunTimer.IsOffCooldown(Time.time)) {
       CheckMovement();
       StepSounds();
     }

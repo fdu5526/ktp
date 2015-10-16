@@ -3,48 +3,73 @@ using System.Collections;
 
 public class SwarmMember : MonoBehaviour {
 
-	const float defaultSpeed = 20f;
-	GameObject Ktp;
+	protected enum State { RunToward, Encircle, Tackle, Disabled}
+	protected State currentState;
 
-	enum State { RunToward, Encircle, Tackle, Disabled}
-	State currentState;
+	protected const float defaultSpeed = 20f;
+	protected const float sqrtRoot2 = 1.414f;
+	protected GameObject Ktp;
 
+	protected Timer hitStunTimer;
 
-	Transform[] waypoints;
+  // audios
+  protected AudioSource[] audios;
 
 	// Use this for initialization
 	void Start () {
-		currentState = State.RunToward;
-		
-		Ktp = GameObject.Find("Ktp");
-
-		waypoints = new Transform[6];
-		for (int i = 0; i < waypoints.Length; i++) {
-			waypoints[i] = GameObject.Find("Waypoints/Waypoint" + i).GetComponent<Transform>();
-		}
-	}
-
-
-
-	void Tackle () {
-
-	}
 	
-
-	void SeekTarget () {
-		Vector3 v = Ktp.GetComponent<Transform>().position - GetComponent<Transform>().position;
-		v = v.normalized * defaultSpeed;
-		GetComponent<Rigidbody>().velocity = new Vector3(v.x, 0f, v.z);
-
-		float y = 0f;
-  	GetComponent<Transform>().eulerAngles = new Vector3(0f, y, 0f);
 	}
 
 
+	protected 	void Initialize () {
+		hitStunTimer = new Timer(1f);
+		audios = GetComponents<AudioSource>();
+		Ktp = GameObject.Find("Ktp");
+	}
+
+
+
+	protected virtual void Tackle () {
+
+	}
+
+
+	float RandomFloat { 
+		get { 
+			float f = 2000f * UnityEngine.Random.Range(0.8f, 1.2f);
+
+			return Helper.FiftyFifty ? f : -f; 
+		} 
+	}
+
+
+	void OnCollisionEnter (Collision collision) {
+    int l = collision.gameObject.layer;
+    if (l == Helper.ktpAttackLayer) {
+      currentState = State.Disabled;
+      Vector3 v = new Vector3(RandomFloat, RandomFloat, RandomFloat);
+      Vector3 p = GetComponent<Transform>().position;
+      p = new Vector3(p.x, 0f, p.z);
+      GetComponent<Rigidbody>().AddForceAtPosition(v, p);
+
+      audios[(int)UnityEngine.Random.Range(0, 3)].Play();
+
+    } else if (currentState == State.Disabled && l == Helper.environmentLayer) {
+    	audios[(int)UnityEngine.Random.Range(0, 2)].Play();
+    }
+  }
+
+  void OnCollisionStay (Collision collision) {
+  	int l = collision.gameObject.layer;
+  	if (currentState == State.Disabled && l == Helper.groundLayer) { // no longer flying
+    	audios[0].Play();
+      currentState = State.RunToward;
+      hitStunTimer.Reset(Time.time);
+    }
+  }
+	
 	// Update is called once per frame
-	void FixedUpdate () {
-		if (currentState == State.RunToward) {
-			SeekTarget();
-		}
+	void Update () {
+	
 	}
 }

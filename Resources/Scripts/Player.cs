@@ -8,6 +8,7 @@ public class Player : MonoBehaviour
 
   // can we do things
   bool isDisabled;
+  Timer hitStunTimer;
 
   // player movement variables
   const float defaultSpeed = 20f;
@@ -30,6 +31,8 @@ public class Player : MonoBehaviour
     isWalking = false;
 		audios = GetComponents<AudioSource>();
     wasdInput = new bool[wasdStrings.Length];
+
+    hitStunTimer = new Timer(1f);
 	}
 
 
@@ -102,10 +105,23 @@ public class Player : MonoBehaviour
   }
 
 
+  void OnCollisionEnter(Collision collision) {
+    int l = collision.gameObject.layer;
+    if (l == Helper.ktpLayer) {
+      isDisabled = true;
+      GetComponent<Rigidbody>().AddForce(Vector3.up * 1000f);
+    } else if (isDisabled && l == Helper.groundLayer) {
+      isDisabled = false;
+      hitStunTimer.Reset(Time.time);
+    }
+  }
+
+
 
   // do physics stuff
   void FixedUpdate () {
-    if (!isDisabled) {
+
+    if (!isDisabled && hitStunTimer.IsOffCooldown(Time.time)) {
       CheckMovement();
       StepSounds();
     }

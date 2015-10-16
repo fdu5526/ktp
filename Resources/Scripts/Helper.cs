@@ -6,6 +6,9 @@ using System.Runtime.InteropServices;
 public class Helper
 {
 
+    public const int ktpLayer = 9;
+    public const int groundLayer = 12;
+
     public static bool FiftyFifty { get { return UnityEngine.Random.value > 0.5f; } }
     /*
      * hacky but efficient Fast inverse square root algorithm

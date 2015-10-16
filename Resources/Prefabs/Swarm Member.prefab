@@ -13,7 +13,7 @@ GameObject:
   - 136: {fileID: 13659600}
   - 54: {fileID: 5406480}
   - 114: {fileID: 11402276}
-  m_Layer: 9
+  m_Layer: 8
   m_Name: Swarm Member
   m_TagString: Bear
   m_Icon: {fileID: 0}
@@ -27,7 +27,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.28000021, y: 1.03499997, z: 0}
+  m_LocalPosition: {x: -74.5, y: 1.03499997, z: -22}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -42,7 +42,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_Materials:
-  - {fileID: 2100000, guid: f241f32c3fffb2a4aaa2482ab62455f9, type: 2}
+  - {fileID: 2100000, guid: e0b6e52b41dd59e40b9dc99785ceda53, type: 2}
   m_SubsetIndices: 
   m_StaticBatchRoot: {fileID: 0}
   m_UseLightProbes: 1

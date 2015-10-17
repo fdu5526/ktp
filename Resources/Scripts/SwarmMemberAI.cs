@@ -3,11 +3,11 @@ using System.Collections;
 
 public class SwarmMemberAI : SwarmMember {
 
+	float currentEncircleSqDistance;
+	float currentEncircleDirection;
+	Transform[] waypoints;
 
 	
-
-
-	Transform[] waypoints;
 
 	// Use this for initialization
 	void Start () {
@@ -20,6 +20,10 @@ public class SwarmMemberAI : SwarmMember {
 
 		base.Initialize();
 	}
+
+
+	float NewEncircleDistance { get { return UnityEngine.Random.Range(100f, 300f); } }
+	float NewEncircleDirection { get { return UnityEngine.Random.value > 0.5f ? 1f : -1f; } }
 
 
 

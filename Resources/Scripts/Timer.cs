@@ -11,8 +11,8 @@ public class Timer {
 		cooldownTime = c;
 		prevActivationTime = -c;
 	}
-	public float TimeLeft(float time) { return cooldownTime - (time - prevActivationTime); }
-	public bool IsOffCooldown(float time) { return time - prevActivationTime > cooldownTime; }
+	public float TimeLeft() { return cooldownTime - (Time.time - prevActivationTime); }
+	public bool IsOffCooldown() { return Time.time - prevActivationTime > cooldownTime; }
 	public float CooldownTime { get { return cooldownTime; } set { cooldownTime = value; } }
-	public void Reset(float time) { prevActivationTime = time; }
+	public void Reset() { prevActivationTime = Time.time; }
 }

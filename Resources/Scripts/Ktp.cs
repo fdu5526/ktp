@@ -3,11 +3,11 @@ using System.Collections;
 
 public class Ktp : MonoBehaviour {
 
-	const float defaultSpeed = 5f;
+	const float defaultSpeed = 3f;
 	const float attackSpeed = 30f;
 
 	Transform[] waypoints;
-	int currentWaypointIndex;
+	public int currentWaypointIndex;
 
 	Timer attackCooldownTimer;
 	Timer attackDurationTimer;
@@ -24,34 +24,37 @@ public class Ktp : MonoBehaviour {
 
 		ktpAttack = GameObject.Find("Ktp/KtpAttack");
 		ktpAttack.SetActive(false);
-		attackCooldownTimer = new Timer(0.5f);
+		attackCooldownTimer = new Timer(0.15f);
 		attackDurationTimer = new Timer(0.1f);
 
 		currentWaypointIndex = 0;
 	}
 
 
-	void Attack (float time) {
+	void Attack (Vector3 d) {
 
-		// TODO
-		Vector3 tp = waypoints[currentWaypointIndex].GetComponent<Transform>().position;
-		Vector3 pp = GetComponent<Transform>().position;
-		pp = new Vector3(pp.x, 0f, pp.z);
-		Vector3 v = tp - pp;
-		v = new Vector3(v.x, 1f, v.z);
-		v = v.normalized * attackSpeed;
+		d = d.normalized * attackSpeed;
 
 		ktpAttack.GetComponent<Transform>().position = GetComponent<Transform>().position;
 
 		
 
-		ktpAttack.GetComponent<Rigidbody>().velocity = v;
+		ktpAttack.GetComponent<Rigidbody>().velocity = d;
 
 		ktpAttack.SetActive(true);
-		attackDurationTimer.Reset(time);
+		attackDurationTimer.Reset();
 	}
 
 
+	void OnCollisionEnter (Collision collision) {
+    int l = collision.gameObject.layer;
+    if (l == Helper.swarmLayer) {
+			if (attackCooldownTimer.IsOffCooldown()) {
+				attackCooldownTimer.Reset();
+				Attack (-collision.relativeVelocity.normalized);
+			}
+    }
+	}
 
 
 	void WalkToWaypoint () {
@@ -78,19 +81,12 @@ public class Ktp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
-		
-		float time = Time.time;
 
-		WalkToWaypoint();
-		
-
-
-		if (attackCooldownTimer.IsOffCooldown(time)) {
-			attackCooldownTimer.Reset(time);
-			Attack(time);
+		if (attackCooldownTimer.IsOffCooldown()) {
+			WalkToWaypoint();
 		}
 
-		if (attackDurationTimer.IsOffCooldown(time)) {
+		if (attackDurationTimer.IsOffCooldown()) {
 			ktpAttack.SetActive(false);
 		}
 	}

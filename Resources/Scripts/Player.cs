@@ -10,13 +10,12 @@ public class Player : SwarmMember
   bool isDisabled;
 
   // player movement variables
-  const float defaultSpeed = 20f;
   float yRotation;
   bool isWalking;
 
   // stores player input
-  string[] wasdStrings = {"w", "a", "s", "d"};
-  bool[] wasdInput;
+  string[] inputStrings = {"w", "a", "s", "d", "space"};
+  bool[] inputs;
   
 
 ///////////////////////////////////////////////////////////////////////////////////////////  
@@ -25,7 +24,7 @@ public class Player : SwarmMember
 	void Start () {
     isDisabled = false;
     isWalking = false;
-    wasdInput = new bool[wasdStrings.Length];
+    inputs = new bool[inputStrings.Length];
 
     base.Initialize();
 	}
@@ -40,12 +39,12 @@ public class Player : SwarmMember
     float vz = 0f;
 
 
-    if (wasdInput[0]) {
-      if (wasdInput[1]) {
+    if (inputs[0]) {
+      if (inputs[1]) {
         vz = defaultSpeed;
         yRotation = 0f;
       }
-      else if (wasdInput[3]) {
+      else if (inputs[3]) {
         vx = defaultSpeed;
         yRotation = 90f;
       }
@@ -54,12 +53,12 @@ public class Player : SwarmMember
         vz = defaultSpeed/sqrtRoot2;
         yRotation = 45f;
       }
-    } else if (wasdInput[2]) {
-      if (wasdInput[1]) {
+    } else if (inputs[2]) {
+      if (inputs[1]) {
         vx = -defaultSpeed;
         yRotation = 270f;
       }
-      else if (wasdInput[3]) {
+      else if (inputs[3]) {
         vz = -defaultSpeed;
         yRotation = 180f;
       } else {
@@ -67,21 +66,25 @@ public class Player : SwarmMember
         vz = -defaultSpeed/sqrtRoot2;
         yRotation = 225f;
       }
-    } else if (wasdInput[1]) {
+    } else if (inputs[1]) {
       vx = -defaultSpeed/sqrtRoot2;
       vz = defaultSpeed/sqrtRoot2;
       yRotation = 315f;
     }
-    else if (wasdInput[3]) {
+    else if (inputs[3]) {
       vx = defaultSpeed/sqrtRoot2;
       vz = -defaultSpeed/sqrtRoot2;
       yRotation = 135f;
     } else {
       isWalking = false;
     }
-    GetComponent<Rigidbody>().velocity = new Vector3(Mathf.Lerp(vx, v.x, 0.5f), 
-                                                     v.y,
-                                                     Mathf.Lerp(vz, v.z, 0.5f));
+    v = new Vector3(Mathf.Lerp(vx, v.x, 0.5f), 
+                    v.y,
+                    Mathf.Lerp(vz, v.z, 0.5f));
+    GetComponent<Rigidbody>().velocity = v;
+    if (v.sqrMagnitude > 0f) {
+      TackleDirection = v.normalized;
+    }
 
   	// rotate player towards correct direction
     float y = GetComponent<Transform>().eulerAngles.y;
@@ -100,21 +103,45 @@ public class Player : SwarmMember
   }
 
 
+  protected override void Tackle () {
+    GetComponent<Rigidbody>().velocity = TackleDirection * tackleSpeed;
+    currentState = State.Tackle;
+  }
+
+
+  void CheckTackle () {
+    if (inputs[4] && 
+        tackleCooldownTimer.IsOffCooldown()) {
+      Tackle();
+      tackleCooldownTimer.Reset();
+      tackleDurationTimer.Reset();
+    } else if (!tackleDurationTimer.IsOffCooldown()) {
+      Tackle();
+    } else if (currentState == State.Tackle) {
+      hitStunTimer.Reset();
+      currentState = State.RunToward;
+    }
+  }
 
 
   // do physics stuff
   void FixedUpdate () {
 
-    if (currentState != State.Disabled && hitStunTimer.IsOffCooldown(Time.time)) {
-      CheckMovement();
+    if (currentState != State.Disabled && hitStunTimer.IsOffCooldown()) {
+      
+      if (currentState == State.RunToward) {
+        CheckMovement();
+      }
+      
+      CheckTackle();
       StepSounds();
     }
   }	
 
 	// get player input
 	void Update () {
-    for (int i = 0; i < wasdStrings.Length; i++) {
-      wasdInput[i] = Input.GetKey(wasdStrings[i]);
+    for (int i = 0; i < inputStrings.Length; i++) {
+      inputs[i] = Input.GetKey(inputStrings[i]);
     }
 	}
 }

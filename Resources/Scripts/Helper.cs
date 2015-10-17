@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
  */
 public class Helper
 {
-
+    public const int swarmLayer = 8;
     public const int ktpLayer = 9;
     public const int environmentLayer = 11;
     public const int groundLayer = 12;

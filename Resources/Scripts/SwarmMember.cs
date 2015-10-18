@@ -6,12 +6,12 @@ public class SwarmMember : MonoBehaviour {
 	protected enum State { RunToward, Encircle, Tackle, Disabled}
 	protected State currentState;
 
-	protected const float defaultSpeed = 15f;
+	protected const float defaultSpeed = 10f;
 	protected const float sqrtRoot2 = 1.414f;
 	protected GameObject Ktp;
 
 
-	protected const float tackleSpeed = 30f;
+	protected const float tackleSpeed = 50f;
 	protected Vector3 TackleDirection;
 	protected Timer tackleDurationTimer;
 	protected Timer tackleCooldownTimer;
@@ -32,8 +32,12 @@ public class SwarmMember : MonoBehaviour {
 		Ktp = GameObject.Find("Ktp");
 	}
 
-
-	protected virtual void Tackle () { }
+  protected void Tackle () {
+    GetComponent<Rigidbody>().velocity = TackleDirection * tackleSpeed;
+    currentState = State.Tackle;
+    tackleCooldownTimer.Reset();
+    tackleDurationTimer.Reset();
+  }
 
 
 	float RandomFloat { 

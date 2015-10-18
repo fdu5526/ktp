@@ -103,19 +103,9 @@ public class Player : SwarmMember
   }
 
 
-  protected override void Tackle () {
-    GetComponent<Rigidbody>().velocity = TackleDirection * tackleSpeed;
-    currentState = State.Tackle;
-  }
-
-
   void CheckTackle () {
     if (inputs[4] && 
         tackleCooldownTimer.IsOffCooldown()) {
-      Tackle();
-      tackleCooldownTimer.Reset();
-      tackleDurationTimer.Reset();
-    } else if (!tackleDurationTimer.IsOffCooldown()) {
       Tackle();
     } else if (currentState == State.Tackle) {
       hitStunTimer.Reset();

@@ -78,14 +78,18 @@ public class SwarmMember : MonoBehaviour {
       if (audios != null) {
         audios[(int)UnityEngine.Random.Range(0, 3)].Play();
       }
-      respawnTimer.Reset();
 
+      if (respawnTimer != null) {
+        respawnTimer.Reset();
+      }
     } else if (currentState == State.Disabled && 
     					 (l == Helper.environmentLayer || l == Helper.groundLayer)) {
     	audios[(int)UnityEngine.Random.Range(0, 2)].Play();
-    } else if (l == Helper.swarmLayer && 
-               (collision.gameObject.GetComponent<SwarmMember>().currentState == State.Disabled)) {
-      if (attackStunTimer != null) {
+    } else if (l == Helper.swarmLayer) {
+      SwarmMember s = collision.gameObject.GetComponent<SwarmMember>();
+      if (attackStunTimer != null && 
+          s != null &&
+          s.currentState == State.Disabled) {
         attackStunTimer.Reset();
         audios[(int)UnityEngine.Random.Range(0, 2)].Play();
       }

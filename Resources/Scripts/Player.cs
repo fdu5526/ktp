@@ -6,9 +6,6 @@ using System.Collections;
 public class Player : SwarmMember 
 {
 
-  // can we do things
-  bool isDisabled;
-
   // player movement variables
   float yRotation;
   bool isWalking;
@@ -22,7 +19,6 @@ public class Player : SwarmMember
 
   // Use this for initialization
 	void Start () {
-    isDisabled = false;
     isWalking = false;
     inputs = new bool[inputStrings.Length];
 
@@ -95,7 +91,7 @@ public class Player : SwarmMember
   // play stepping sounds when moving 
   void StepSounds () {
 
-    if (currentState == State.RunToward || currentState == State.Encircle) {
+    if (isWalking) {
       
     } else {
 
@@ -108,23 +104,41 @@ public class Player : SwarmMember
         tackleCooldownTimer.IsOffCooldown()) {
       Tackle();
     } else if (currentState == State.Tackle) {
-      hitStunTimer.Reset();
+      attackStunTimer.Reset();
       currentState = State.RunToward;
     }
   }
 
 
+  protected override void Respawn () {
+    int w = NearestRespawnPoint();
+    GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Player"));
+
+    Vector2 r = UnityEngine.Random.insideUnitCircle * 5f;
+    g.GetComponent<Transform>().position = waypoints[w].position + new Vector3(r.x, 0f, r.y);
+
+    this.gameObject.name = "ded";
+    GameObject.Find("Main Camera").GetComponent<Camera>().ReloadPlayerTransform();
+    Destroy(this);
+  }
+
+
   // do physics stuff
   void FixedUpdate () {
+    if (currentState == State.Dead) {
+      return;
+    }
 
-    if (currentState != State.Disabled && hitStunTimer.IsOffCooldown()) {
-      
+    if (currentState != State.Disabled && attackStunTimer.IsOffCooldown()) {
       if (currentState == State.RunToward) {
         CheckMovement();
       }
-      
       CheckTackle();
       StepSounds();
+    } else if (currentState == State.Disabled && 
+               respawnTimer.IsOffCooldown()) {
+      currentState = State.Dead;
+      Respawn();
     }
   }	
 

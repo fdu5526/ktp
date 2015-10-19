@@ -24,6 +24,15 @@ public class Camera : MonoBehaviour {
 			//audios[i].volume = 0f;
 		}
 	}
+
+
+	public void ReloadPlayerTransform () {
+		GameObject g = GameObject.Find ("Player(Clone)");
+		if (g.GetComponent<SwarmMember>().currentState != SwarmMember.State.Dead) {
+			playerTransform = GameObject.Find ("Player(Clone)").transform;
+		}
+		
+	}
 	
 
 	void ScarySound () {
@@ -54,6 +63,6 @@ public class Camera : MonoBehaviour {
 		
 		float x = playerTransform.position.x - 88.5f;
 		float z = playerTransform.position.z - 71.6f;
-		transform.position = new Vector3(x,y,z);
+		transform.position = new Vector3(x,y,z) * 0.1f + 0.9f * transform.position;
 	}
 }

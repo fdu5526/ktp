@@ -82,6 +82,12 @@ public class Player : SwarmMember
       TackleDirection = v.normalized;
     }
 
+    if (isWalking) {
+      animator.SetInteger("currentState", (int)State.RunToward);
+    } else {
+      animator.SetInteger("currentState", 1);
+    }
+
   	// rotate player towards correct direction
     float y = GetComponent<Transform>().eulerAngles.y;
   	GetComponent<Transform>().eulerAngles = new Vector3(0f, Mathf.Lerp(yRotation, y, 0.1f), 0f);
@@ -94,7 +100,6 @@ public class Player : SwarmMember
     if (isWalking) {
       
     } else {
-
     }
   }
 
@@ -135,10 +140,15 @@ public class Player : SwarmMember
       }
       CheckTackle();
       StepSounds();
-    } else if (currentState == State.Disabled && 
-               respawnTimer.IsOffCooldown()) {
-      currentState = State.Dead;
-      Respawn();
+    } else if (currentState == State.Disabled) {
+      if (flailTimer.IsOffCooldown()) {
+        animator.SetInteger("currentState", (int)State.Dead);
+      }
+      if (respawnTimer.IsOffCooldown())
+      {
+        currentState = State.Dead;
+        Respawn();
+      }
     }
   }	
 

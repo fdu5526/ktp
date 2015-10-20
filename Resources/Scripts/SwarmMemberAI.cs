@@ -95,8 +95,19 @@ public class SwarmMemberAI : SwarmMember {
 	  	d = d.normalized * defaultSpeed;
 	  	GetComponent<Rigidbody>().velocity = new Vector3(d.x, 0f, d.z);
 
-			float y = 0f; // TODO calculate correct Y here
-	  	GetComponent<Transform>().eulerAngles = new Vector3(0f, y, 0f);
+			float theta = 0f;
+			if (currentState == State.Encircle) {
+				d = Ktp.GetComponent<Transform>().position - GetComponent<Transform>().position;
+				theta = Vector2.Angle(Vector2.up, new Vector2(d.x, d.z));
+	    	theta = d.x < 0f ? -theta : theta;
+			} else {
+				theta = Vector2.Angle(Vector2.up, new Vector2(d.x, d.z));
+	    	theta = d.x < 0f ? -theta : theta;
+			}
+			
+	  	GetComponent<Transform>().eulerAngles = new Vector3(0f, theta, 0f);
+
+	  	animator.SetInteger("currentState", (int)State.RunToward);
 		}
 	}
 
@@ -122,10 +133,15 @@ public class SwarmMemberAI : SwarmMember {
 			bool b = false;
 			Vector3 d = FindTarget(ref b);
 			SeekTarget(d, b);
-		} else if (currentState == State.Disabled && 
-							 respawnTimer.IsOffCooldown()) {
-			currentState = State.Dead;
-      Respawn();
+		} else if (currentState == State.Disabled) {
+			if (flailTimer.IsOffCooldown()) {
+				animator.SetInteger("currentState", (int)State.Dead);
+			}
+			if (currentState == State.Disabled && 
+						 respawnTimer.IsOffCooldown()) {
+				currentState = State.Dead;
+      	Respawn();
+      }
 		}
 	}
 }

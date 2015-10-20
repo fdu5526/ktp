@@ -74,7 +74,6 @@ public class SwarmMember : MonoBehaviour {
     if (l == Helper.ktpAttackLayer) {
       currentState = State.Disabled;
       Vector3 v = new Vector3(RandomFloat / 2f, RandomFloat, RandomFloat / 2f);
-      //Vector3 v = Vector3.zero; // TODO
 
       Vector3 p = GetComponent<Transform>().position;
       p = new Vector3(p.x, 0f, p.z);

@@ -110,6 +110,7 @@ public class Player : SwarmMember
       Tackle();
     } else if (currentState == State.Tackle) {
       attackStunTimer.Reset();
+      animator.SetInteger("currentState", (int)State.RunToward);
       currentState = State.RunToward;
     }
   }

@@ -36,9 +36,6 @@ public class Ktp : MonoBehaviour {
 		d = d.normalized * attackSpeed;
 
 		ktpAttack.GetComponent<Transform>().position = GetComponent<Transform>().position;
-
-		
-
 		ktpAttack.GetComponent<Rigidbody>().velocity = d;
 
 		ktpAttack.SetActive(true);
@@ -46,12 +43,14 @@ public class Ktp : MonoBehaviour {
 	}
 
 
-	void OnCollisionEnter (Collision collision) {
-    int l = collision.gameObject.layer;
+	void OnTriggerEnter(Collider collider) {
+    int l = collider.gameObject.layer;
     if (l == Helper.swarmLayer) {
 			if (attackCooldownTimer.IsOffCooldown()) {
 				attackCooldownTimer.Reset();
-				Attack (-collision.relativeVelocity.normalized);
+
+				Vector3 d = collider.gameObject.GetComponent<Transform>().position - GetComponent<Transform>().position;
+				Attack (d);
 			}
     }
 	}

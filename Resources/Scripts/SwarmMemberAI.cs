@@ -93,7 +93,8 @@ public class SwarmMemberAI : SwarmMember {
 	  	}	
 
 	  	d = d.normalized * defaultSpeed;
-	  	GetComponent<Rigidbody>().velocity = new Vector3(d.x, 0f, d.z);
+	  	Vector3 v = GetComponent<Rigidbody>().velocity;
+	  	GetComponent<Rigidbody>().velocity = new Vector3(d.x, v.y, d.z);
 
 			float theta = 0f;
 			if (currentState == State.Encircle) {

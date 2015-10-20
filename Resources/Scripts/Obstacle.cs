@@ -5,6 +5,10 @@ public class Obstacle : MonoBehaviour {
 
 
   AudioSource[] audios;
+  
+  void Start () {
+    audios = GetComponents<AudioSource>();
+  }
 
   float RandomFloat { 
     get { 
@@ -24,7 +28,11 @@ public class Obstacle : MonoBehaviour {
       GetComponent<Rigidbody>().AddForceAtPosition(v, p);
 
       if (audios != null) {
-        audios[(int)UnityEngine.Random.Range(0, 3)].Play();
+        audios[(int)UnityEngine.Random.Range(0, 4)].Play();
+      }
+    } else if (l == Helper.swarmLayer) {
+      if (audios != null) {
+        audios[(int)UnityEngine.Random.Range(0, 4)].Play();
       }
     }
   }

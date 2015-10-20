@@ -65,13 +65,15 @@ public class Ktp : MonoBehaviour {
 
 		Vector3 tp = waypoints[currentWaypointIndex].GetComponent<Transform>().position;
 		Vector3 pp = GetComponent<Transform>().position;
-		Vector3 v = tp - pp;
+		Vector3 d = tp - pp;
+		Vector3 v = d.normalized * defaultSpeed;
 
-		GetComponent<Rigidbody>().velocity = v.normalized * defaultSpeed;
+		GetComponent<Rigidbody>().velocity = new Vector3(v.x, GetComponent<Rigidbody>().velocity.y, v.z);
+		GetComponent<Rigidbody>().velocity = v;
 
 
 		// reached target, go seek next one
-		if (v.sqrMagnitude < 0.1f) {
+		if (d.sqrMagnitude < 0.1f) {
 			currentWaypointIndex++;
 		}
 	}

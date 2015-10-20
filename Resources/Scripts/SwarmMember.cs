@@ -27,10 +27,10 @@ public class SwarmMember : MonoBehaviour {
 
 
 	protected void Initialize () {
-		tackleDurationTimer = new Timer(0.1f);
+		tackleDurationTimer = new Timer(0.3f);
 		tackleCooldownTimer = new Timer(1.5f);
 		attackStunTimer = new Timer(1f);
-    flailTimer = new Timer(1f);
+    flailTimer = new Timer(1.5f);
 		respawnTimer = new Timer(3f);
 		audios = GetComponents<AudioSource>();
 		Ktp = GameObject.Find("Ktp");
@@ -68,10 +68,10 @@ public class SwarmMember : MonoBehaviour {
 		} 
 	}
 
-
 	void OnCollisionEnter (Collision collision) {
     int l = collision.gameObject.layer;
-    if (l == Helper.ktpAttackLayer) {
+    if (l == Helper.ktpAttackLayer ||
+        l == Helper.explosionLayer) {
       currentState = State.Disabled;
       Vector3 v = new Vector3(RandomFloat / 2f, RandomFloat, RandomFloat / 2f);
 
@@ -95,13 +95,14 @@ public class SwarmMember : MonoBehaviour {
       }
 
       int i = (int)UnityEngine.Random.Range(0f,7f);
-      if (i < 5) {
+      if (i < 5 && audios != null) {
         AudioClip a = (AudioClip)MonoBehaviour.Instantiate(Resources.Load("Sounds/Deaths/male" + i));
         audios[0].clip = a;
         audios[0].Play();
       }
 
     } else if (currentState == State.Disabled && 
+               audios != null && 
     					 (l == Helper.environmentLayer || l == Helper.groundLayer)) {
     	audios[(int)UnityEngine.Random.Range(0, 2)].Play();
     } else if (l == Helper.swarmLayer) {

@@ -108,7 +108,8 @@ public class Player : SwarmMember
     if (inputs[4] && 
         tackleCooldownTimer.IsOffCooldown()) {
       Tackle();
-    } else if (currentState == State.Tackle) {
+    } else if (currentState == State.Tackle &&
+               tackleDurationTimer.IsOffCooldown()) {
       attackStunTimer.Reset();
       animator.SetInteger("currentState", (int)State.RunToward);
       currentState = State.RunToward;
@@ -125,6 +126,7 @@ public class Player : SwarmMember
 
     this.gameObject.name = "ded";
     GameObject.Find("Main Camera").GetComponent<Camera>().ReloadPlayerTransform();
+    
     Destroy(this);
   }
 

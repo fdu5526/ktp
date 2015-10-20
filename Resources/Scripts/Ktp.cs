@@ -45,7 +45,8 @@ public class Ktp : MonoBehaviour {
 
 	void OnTriggerEnter(Collider collider) {
     int l = collider.gameObject.layer;
-    if (l == Helper.swarmLayer) {
+    if (l == Helper.swarmLayer ||
+    		l == Helper.obstacleLayer) {
 			if (attackCooldownTimer.IsOffCooldown()) {
 				attackCooldownTimer.Reset();
 

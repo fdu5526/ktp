@@ -10,6 +10,7 @@ public class Helper
     public const int environmentLayer = 11;
     public const int groundLayer = 12;
     public const int ktpAttackLayer = 13;
+     public const int obstacleLayer = 14;
 
     public static bool FiftyFifty { get { return UnityEngine.Random.value > 0.5f; } }
     /*

@@ -50,12 +50,13 @@ public class SwarmMember : MonoBehaviour {
     animator.SetInteger("currentState", (int)State.Tackle);
   }
 
-  protected int NearestRespawnPoint () {
-    int w = Ktp.GetComponent<Ktp>().currentWaypointIndex;
-
-    if (w <= 1) { return 1; }
-    else if (w <= 3) { return 3; }
-    else { return 5; }
+  protected int NearestRespawnPoint {
+    get {
+      int w = Ktp.GetComponent<Ktp>().currentWaypointIndex;
+      if (w <= 1) { return 1; }
+      else if (w <= 3) { return 3; }
+      else { return 5; }
+    }
   }
 
   protected virtual void Respawn () { }

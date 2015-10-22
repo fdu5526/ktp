@@ -118,7 +118,7 @@ public class Player : SwarmMember
 
 
   protected override void Respawn () {
-    int w = NearestRespawnPoint();
+    int w = NearestRespawnPoint;
     GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Player"));
 
     Vector2 r = UnityEngine.Random.insideUnitCircle * 5f;

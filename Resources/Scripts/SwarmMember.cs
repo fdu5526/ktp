@@ -102,6 +102,13 @@ public class SwarmMember : MonoBehaviour {
         audios[0].Play();
       }
 
+      if (GetComponent<Transform>().Find("Canvas") != null) {
+        if (GetComponent<Transform>().Find("Canvas").gameObject != null) {
+          GetComponent<Transform>().Find("Canvas").gameObject.SetActive(false);
+        }
+      }
+      
+
     } else if (currentState == State.Disabled && 
                audios != null && 
     					 (l == Helper.environmentLayer || l == Helper.groundLayer)) {

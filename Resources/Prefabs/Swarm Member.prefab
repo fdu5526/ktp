@@ -1804,6 +1804,7 @@ GameObject:
   - 224: {fileID: 22421822}
   - 222: {fileID: 22290400}
   - 114: {fileID: 11448344}
+  - 114: {fileID: 11427726}
   m_Layer: 5
   m_Name: Text
   m_TagString: Untagged
@@ -4095,7 +4096,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 155600}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -17.4099998, y: 0, z: -9.61999989}
+  m_LocalPosition: {x: -12.6899996, y: 0, z: -14.5600004}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 423454}
@@ -4866,6 +4867,17 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &11427726
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 172196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e28002e6fdf83b74c8bb935ba4f3cb46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &11445308
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4908,7 +4920,7 @@ MonoBehaviour:
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
   m_FontData:
     m_Font: {fileID: 10102, guid: 0000000000000000e000000000000000, type: 0}
-    m_FontSize: 50
+    m_FontSize: 40
     m_FontStyle: 0
     m_BestFit: 0
     m_MinSize: 10
@@ -4918,7 +4930,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: New Text
+  m_Text: protect our water
 --- !u!114 &11463698
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -4927,7 +4939,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 190524}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6228dc5c699245cb9c3c7502a7abb68, type: 3}
+  m_Script: {fileID: 11500000, guid: 2dca4b1f9ea318f4280ab38cefb42cf9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!136 &13659600

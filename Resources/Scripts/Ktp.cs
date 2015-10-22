@@ -57,6 +57,15 @@ public class Ktp : MonoBehaviour {
 	}
 
 
+	int NearestRespawnPoint {
+		get {
+			if (currentWaypointIndex <= 1) { return 1; }
+	    else if (currentWaypointIndex <= 3) { return 3; }
+	    else { return 5; }
+		}
+	}
+
+
 	void WalkToWaypoint () {
 
 		if (currentWaypointIndex == waypoints.Length) {
@@ -74,7 +83,15 @@ public class Ktp : MonoBehaviour {
 
 		// reached target, go seek next one
 		if (d.sqrMagnitude < 0.1f) {
+
+			int n = NearestRespawnPoint;
+			if (currentWaypointIndex == n) {
+				GameObject.Find("Fountain" + n).GetComponent<Fountain>().DryOut();
+			}
 			currentWaypointIndex++;
+
+
+
 		}
 	}
 

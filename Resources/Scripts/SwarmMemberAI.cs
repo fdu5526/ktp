@@ -125,7 +125,8 @@ public class SwarmMemberAI : SwarmMember {
 
 	// Update is called once per frame
 	void FixedUpdate () {
-		if (currentState == State.Dead) {
+		if (currentState == State.Dead ||
+				currentState == State.Pause) {
 			return;
 		}
 

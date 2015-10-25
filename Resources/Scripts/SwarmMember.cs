@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SwarmMember : MonoBehaviour {
 
-	public enum State { RunToward, Encircle, Tackle, Disabled, Dead}
+	public enum State { RunToward, Encircle, Tackle, Disabled, Dead, Pause}
 	public State currentState;
 
 	protected const float defaultSpeed = 10f;

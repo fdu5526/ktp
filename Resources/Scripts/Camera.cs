@@ -17,12 +17,6 @@ public class Camera : MonoBehaviour {
 		playerTransform = GameObject.Find ("Player").transform;
 		ktpTransform = GameObject.Find ("Ktp").transform;
 		audios = GetComponents<AudioSource>();
-
-
-		//TODO
-		for (int i = 0; i < audios.Length; i++) {
-			//audios[i].volume = 0f;
-		}
 	}
 
 

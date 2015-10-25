@@ -133,7 +133,8 @@ public class Player : SwarmMember
 
   // do physics stuff
   void FixedUpdate () {
-    if (currentState == State.Dead) {
+    if (currentState == State.Dead ||
+        currentState == State.Pause) {
       return;
     }
 
@@ -157,6 +158,10 @@ public class Player : SwarmMember
 
 	// get player input
 	void Update () {
+    if (currentState == State.Dead ||
+        currentState == State.Pause) {
+      return;
+    }
     for (int i = 0; i < inputStrings.Length; i++) {
       inputs[i] = Input.GetKey(inputStrings[i]);
     }

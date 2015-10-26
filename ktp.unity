@@ -5419,7 +5419,7 @@ GameObject:
   serializedVersion: 4
   m_Component:
   - 4: {fileID: 1961094141}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: SwarmMembers
   m_TagString: Untagged
   m_Icon: {fileID: 0}

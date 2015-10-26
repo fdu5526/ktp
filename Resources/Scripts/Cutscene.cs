@@ -6,6 +6,7 @@ public class Cutscene : MonoBehaviour {
 	
 	string[][] texts;
 	int currentChunkIndex;
+	float duration = 2f;
 
 	int currentTextIndex;
 
@@ -35,15 +36,29 @@ public class Cutscene : MonoBehaviour {
 	 							 ""};
 
 
-		Play();
+		Invoke("Play", 1f);
 	}
 
 
 	public void Play () {
+
+		GetComponent<Canvas>().enabled = true;
+
+		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
+		foreach (GameObject g in swarms) {
+			SwarmMember sm = g.GetComponent<SwarmMember>();
+			if (sm != null) {
+				if (sm.currentState != SwarmMember.State.Dead &&
+					  sm.currentState != SwarmMember.State.Disabled) {
+					sm.currentState = SwarmMember.State.Pause;
+				}
+			}
+		}
+
 		currentChunkIndex++;
 		currentTextIndex = 0;
 		for (int i = 0; i < texts[currentChunkIndex].Length; i++) {
-			Invoke("NextText", 2f * (float)i);
+			Invoke("NextText", duration * (float)i);
 		}
 	}
 
@@ -51,6 +66,24 @@ public class Cutscene : MonoBehaviour {
 	void NextText () {
 		text.GetComponent<Text>().text = texts[currentChunkIndex][currentTextIndex];
 		currentTextIndex++;
+
+		if (currentTextIndex == texts[currentChunkIndex].Length) {
+			Invoke("EndCutscene", duration);
+		}
+	}
+
+	void EndCutscene () {
+		GetComponent<Canvas>().enabled = false;
+		
+		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
+		foreach (GameObject g in swarms) {
+			SwarmMember sm = g.GetComponent<SwarmMember>();
+			if (sm != null) {
+				if (sm.currentState == SwarmMember.State.Pause) {
+					sm.currentState = SwarmMember.State.RunToward;
+				}
+			}
+		}
 	}
 
 

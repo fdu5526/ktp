@@ -69,6 +69,22 @@ public class SwarmMember : MonoBehaviour {
 		} 
 	}
 
+
+
+  public void Pause () {
+    currentState = State.Pause;
+    GetComponent<Rigidbody>().velocity = Vector3.zero;
+    GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+    GetComponent<Transform>().eulerAngles = Vector3.zero;
+    animator.SetInteger("currentState", 1);
+  }
+
+
+  public void Unpause () {
+    currentState = State.RunToward;
+    animator.SetInteger("currentState", (int)State.RunToward);
+  }
+
 	void OnCollisionEnter (Collision collision) {
     int l = collision.gameObject.layer;
     if (l == Helper.ktpAttackLayer ||

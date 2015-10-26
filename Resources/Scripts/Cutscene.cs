@@ -50,7 +50,7 @@ public class Cutscene : MonoBehaviour {
 			if (sm != null) {
 				if (sm.currentState != SwarmMember.State.Dead &&
 					  sm.currentState != SwarmMember.State.Disabled) {
-					sm.currentState = SwarmMember.State.Pause;
+					sm.Pause();
 				}
 			}
 		}
@@ -74,22 +74,15 @@ public class Cutscene : MonoBehaviour {
 
 	void EndCutscene () {
 		GetComponent<Canvas>().enabled = false;
-		
+
 		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
 		foreach (GameObject g in swarms) {
 			SwarmMember sm = g.GetComponent<SwarmMember>();
 			if (sm != null) {
 				if (sm.currentState == SwarmMember.State.Pause) {
-					sm.currentState = SwarmMember.State.RunToward;
+					sm.Unpause();
 				}
 			}
 		}
-	}
-
-
-	
-	// Update is called once per frame
-	void Update () {
-	
 	}
 }

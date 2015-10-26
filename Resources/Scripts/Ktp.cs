@@ -80,6 +80,12 @@ public class Ktp : MonoBehaviour {
 		GetComponent<Rigidbody>().velocity = new Vector3(v.x, GetComponent<Rigidbody>().velocity.y, v.z);
 		GetComponent<Rigidbody>().velocity = v;
 
+		if (v.z < v.x) {
+			GetComponent<Transform>().eulerAngles = new Vector3(0f, 180f, 0f);
+		} else{
+			GetComponent<Transform>().eulerAngles = new Vector3(0f, -90f, 0f);
+		}
+
 
 		// reached target, go seek next one
 		if (d.sqrMagnitude < 0.1f) {
@@ -89,9 +95,6 @@ public class Ktp : MonoBehaviour {
 				GameObject.Find("Fountain" + n).GetComponent<Fountain>().DryOut();
 			}
 			currentWaypointIndex++;
-
-
-
 		}
 	}
 

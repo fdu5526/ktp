@@ -7,16 +7,37 @@ public class KtpFace : MonoBehaviour {
 	GameObject mainCamera;
 	GameObject ktp;
 
+	Vector3 prevKtpP;
+
+	public bool isFacingDown;
+
 	// Use this for initialization
 	void Start () {
 		mainCamera = GameObject.Find("Main Camera");
 		ktp = GameObject.Find("Ktp");
+		prevKtpP = ktp.GetComponent<Transform>().position;
 	}
 
 
 	// Update is called once per frame
 	void Update () {
-		//GetComponent<Transform>().LookAt(-mainCamera.GetComponent<Transform>().position);
+		Vector3 v = ktp.GetComponent<Rigidbody>().velocity;
+
+		if (isFacingDown) {
+			GetComponent<Canvas>().enabled = v.z > v.x;
+		} else {
+			GetComponent<Canvas>().enabled = v.z < v.x;
+		}
+		
+
+
+		Vector3 p = ktp.GetComponent<Transform>().position;
+
+
+		GetComponent<Transform>().position += (p - prevKtpP);
+
+
+		prevKtpP = p;
 
 	}
 }

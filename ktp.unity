@@ -1979,7 +1979,7 @@ Transform:
   - {fileID: 1402312000}
   - {fileID: 1322036999}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 5
 --- !u!1 &936082842
 GameObject:
   m_ObjectHideFlags: 0
@@ -4784,14 +4784,6 @@ Prefab:
       propertyPath: m_Name
       value: Barrel (8)
       objectReference: {fileID: 0}
-    - target: {fileID: 480170, guid: 1c9f0c4c47f23624e8726b8c19d39fc0, type: 2}
-      propertyPath: m_LocalPosition.y
-      value: -29.7999992
-      objectReference: {fileID: 0}
-    - target: {fileID: 5430316, guid: 1c9f0c4c47f23624e8726b8c19d39fc0, type: 2}
-      propertyPath: m_UseGravity
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 1c9f0c4c47f23624e8726b8c19d39fc0, type: 2}
   m_IsPrefabParent: 0
@@ -4816,7 +4808,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 419396, guid: 976482143aebff544ace5f33aa405e2f, type: 2}
       propertyPath: m_LocalPosition.z
-      value: 7
+      value: -16.2000008
       objectReference: {fileID: 0}
     - target: {fileID: 419396, guid: 976482143aebff544ace5f33aa405e2f, type: 2}
       propertyPath: m_LocalRotation.x

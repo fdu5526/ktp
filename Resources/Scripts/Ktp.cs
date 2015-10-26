@@ -13,6 +13,7 @@ public class Ktp : MonoBehaviour {
 	Timer attackDurationTimer;
 
 	GameObject ktpAttack;
+	Animator animator;
 
 
 	// Use this for initialization
@@ -23,6 +24,7 @@ public class Ktp : MonoBehaviour {
 		}
 
 		ktpAttack = GameObject.Find("Ktp/KtpAttack");
+		animator = GetComponent<Animator>();
 		ktpAttack.SetActive(false);
 		attackCooldownTimer = new Timer(0.15f);
 		attackDurationTimer = new Timer(0.1f);
@@ -34,6 +36,8 @@ public class Ktp : MonoBehaviour {
 	void Attack (Vector3 d) {
 
 		d = d.normalized * attackSpeed;
+
+		animator.SetTrigger("swing");
 
 		ktpAttack.GetComponent<Transform>().position = GetComponent<Transform>().position;
 		ktpAttack.GetComponent<Rigidbody>().velocity = d;

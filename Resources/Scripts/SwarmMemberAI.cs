@@ -139,8 +139,7 @@ public class SwarmMemberAI : SwarmMember {
 			if (flailTimer.IsOffCooldown()) {
 				animator.SetInteger("currentState", (int)State.Dead);
 			}
-			if (currentState == State.Disabled && 
-						 respawnTimer.IsOffCooldown()) {
+			if (respawnTimer.IsOffCooldown()) {
 				currentState = State.Dead;
       	Respawn();
       }

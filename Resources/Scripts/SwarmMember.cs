@@ -80,8 +80,9 @@ public class SwarmMember : MonoBehaviour {
       p = new Vector3(p.x, 0f, p.z);
       GetComponent<Rigidbody>().AddForceAtPosition(v, p);
 
+      audios[(int)UnityEngine.Random.Range(0, 3)].Play();
       if (audios != null) {
-        audios[(int)UnityEngine.Random.Range(0, 3)].Play();
+        
       }
 
       if (respawnTimer != null) {

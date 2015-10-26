@@ -34,9 +34,6 @@ public class Cutscene : MonoBehaviour {
 	 	texts[3] = new string[]
 							 { "",
 	 							 ""};
-
-
-		Invoke("Play", 1f);
 	}
 
 
@@ -83,6 +80,13 @@ public class Cutscene : MonoBehaviour {
 					sm.Unpause();
 				}
 			}
+		}
+	}
+
+
+	void Update () {
+		if (Input.GetKeyDown("l")) {
+			Play();
 		}
 	}
 }

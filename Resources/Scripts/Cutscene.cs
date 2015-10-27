@@ -108,7 +108,7 @@ public class Cutscene : MonoBehaviour {
 
 	void NextText () {
 		if (currentTextIndex == texts[currentChunkIndex].Length) {
-			if (currentChunkIndex == texts.Length - 1 && !ending) {
+			if (currentChunkIndex == texts.Length - 1) {
 				Ending();
 			} else {
 				EndCutscene();
@@ -195,21 +195,10 @@ public class Cutscene : MonoBehaviour {
 		ending = true;
 		GetComponent<Transform>().Find("Ending").gameObject.SetActive(true);
 		GetComponent<Transform>().Find("Ending").gameObject.GetComponent<Ending>().Activate();
-		Invoke("ExitApp", 55f);
-	}
-
-
-	void ExitApp () {
-		Application.Quit();
 	}
 
 
 	void Update () {
-		if (ending && 
-				Input.anyKey) {
-			ExitApp();
-		}
-
 		if (isPlaying && 
 				Input.GetKeyDown("space")){
 			NextText();

@@ -10,7 +10,8 @@ public class Cutscene : MonoBehaviour {
 
 	int currentTextIndex;
 
-	public bool hasStarted;
+	bool ending;
+
 	
 	GameObject text;
 
@@ -18,7 +19,7 @@ public class Cutscene : MonoBehaviour {
 	void Start () {
 		currentChunkIndex = -1;
 		text = GetComponent<Transform>().Find("Text").gameObject;
-		hasStarted = false;
+		ending = false;
 
 
 		texts = new string[4][];
@@ -51,7 +52,10 @@ public class Cutscene : MonoBehaviour {
 	 							};
 	 	texts[3] = new string[]
 							 { "Our water!",
-	 							 "It is all gone!"};
+	 							 "It is all gone!",
+	 							 "...",
+		 						 "...",
+		 						 "..."};
 
 
 	 	Invoke("Play", 0.1f);
@@ -64,18 +68,34 @@ public class Cutscene : MonoBehaviour {
 			return;
 		}
 
+		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
+		foreach (GameObject g in swarms) {
+			SwarmMember sm = g.GetComponent<SwarmMember>();
+			if (sm != null) {
+				if (sm.currentState != SwarmMember.State.Dead &&
+					  sm.currentState != SwarmMember.State.Disabled) {
+					sm.Pause();
+				}
+			}
+		}
+
 		GetComponent<Canvas>().enabled = true;
 		GameObject.Find("Ktp").GetComponent<Ktp>().disabled = true;
 
 		currentChunkIndex++;
 		currentTextIndex = 0;
 		for (int i = 0; i < texts[currentChunkIndex].Length; i++) {
-			Invoke("NextText", duration * (float)i);
+			if (currentChunkIndex == 0) {
+				Invoke("NextText", duration * (float)(i + 2));
+			} else {
+				Invoke("NextText", duration * (float)i);
+			}
 		}
 	}
 
 
 	void NextText () {
+		GetComponent<Transform>().Find("Start").gameObject.SetActive(false);
 		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
 		foreach (GameObject g in swarms) {
 			SwarmMember sm = g.GetComponent<SwarmMember>();
@@ -93,7 +113,12 @@ public class Cutscene : MonoBehaviour {
 		currentTextIndex++;
 
 		if (currentTextIndex == texts[currentChunkIndex].Length) {
-			Invoke("EndCutscene", duration);
+			if (currentChunkIndex == texts.Length - 1) {
+				Ending();
+			} else {
+				Invoke("EndCutscene", duration);
+			}
+			
 		}
 	}
 
@@ -113,6 +138,32 @@ public class Cutscene : MonoBehaviour {
 	}
 
 
+	void Ending () {
+		ending = true;
+		GetComponent<Transform>().Find("Ending").gameObject.SetActive(true);
+		Invoke("ExitApp", 55f);
+		GetComponents<AudioSource>()[0].Play();
+
+		AudioSource[] audios = GameObject.Find("Main Camera").GetComponents<AudioSource>();
+		for (int i = 0; i < audios.Length; i++) {
+			audios[i].Stop();
+		}
+	}
+
+
+	void ExitApp () {
+		Application.Quit();
+	}
+
+
 	void Update () {
+		if (ending && 
+				Input.anyKey) {
+			ExitApp();
+		}
+
+		if (Input.GetKeyDown("l")){
+			Play();
+		}
 	}
 }

@@ -118,6 +118,7 @@ public class Player : SwarmMember
 
 
   protected override void Respawn () {
+    currentState = State.Dead;
     int w = NearestRespawnPoint;
     GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Player"));
 
@@ -147,11 +148,6 @@ public class Player : SwarmMember
     } else if (currentState == State.Disabled) {
       if (flailTimer.IsOffCooldown()) {
         animator.SetInteger("currentState", (int)State.Dead);
-      }
-      if (respawnTimer.IsOffCooldown())
-      {
-        currentState = State.Dead;
-        Respawn();
       }
     }
   }	

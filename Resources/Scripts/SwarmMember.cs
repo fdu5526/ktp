@@ -91,6 +91,12 @@ public class SwarmMember : MonoBehaviour {
     int l = collision.gameObject.layer;
     if (l == Helper.ktpAttackLayer ||
         l == Helper.explosionLayer) {
+
+      if (currentState != State.Disabled &&
+          currentState != State.Dead) {
+        Invoke("Respawn", 3f);
+      }
+      
       currentState = State.Disabled;
       Vector3 v = new Vector3(RandomFloat / 2f, RandomFloat, RandomFloat / 2f);
 

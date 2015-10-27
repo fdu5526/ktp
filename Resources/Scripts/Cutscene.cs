@@ -214,5 +214,9 @@ public class Cutscene : MonoBehaviour {
 				Input.GetKeyDown("space")){
 			NextText();
 		}
+
+		if (Input.GetKeyDown("l")) {
+			SwitchToPraise();
+		}
 	}
 }

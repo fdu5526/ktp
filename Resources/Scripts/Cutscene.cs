@@ -41,7 +41,7 @@ public class Cutscene : MonoBehaviour {
 	 							 "Protect the next fountain!",
 	 							 "Use the weight pillars! Knock them down!",
 	 							 "Block the paths!",
-	 							 "She can't move 100 ton weights!"};
+	 							 "Maybe the 100 ton weights can stop her!"};
 	 	texts[2] = new string[]
 							 { "NOOOO!!!",
 	 							 "We only have 1 water fountain left!",

@@ -171,8 +171,7 @@ public class Cutscene : MonoBehaviour {
 					  sm.currentState != SwarmMember.State.Disabled &&
 					  sm.currentState != SwarmMember.State.Awe &&
 					  g.GetComponent<Player>() == null) {
-					sm.Pause();
-					sm.currentState = SwarmMember.State.Awe;
+					sm.SwitchToPraise();
 				}
 			}
 		}
@@ -187,7 +186,6 @@ public class Cutscene : MonoBehaviour {
 	public void IncreaseDeathCount () { 
 		deathCount++;
 		GetComponent<Transform>().Find("Counter").gameObject.GetComponent<Text>().text = "Deaths: "  + deathCount;
-
 	}
 
 
@@ -203,5 +201,11 @@ public class Cutscene : MonoBehaviour {
 				Input.GetKeyDown("space")){
 			NextText();
 		}
+
+		/*
+		if(Input.GetKeyDown("l")) {
+			SwitchToPraise();
+		}
+		*/
 	}
 }

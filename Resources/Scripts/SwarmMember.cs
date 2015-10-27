@@ -73,7 +73,13 @@ public class SwarmMember : MonoBehaviour {
 	}
 
 
-
+  public void SwitchToPraise () {
+    currentState = State.Awe;
+    GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
+    GetComponent<Transform>().eulerAngles = Vector3.zero;
+    animator.SetInteger("currentState", 1);
+  }
+  
   public void Pause () {
     currentState = State.Pause;
     GetComponent<Rigidbody>().velocity = Vector3.zero;

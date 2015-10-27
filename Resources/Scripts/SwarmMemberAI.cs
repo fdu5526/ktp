@@ -56,7 +56,7 @@ public class SwarmMemberAI : SwarmMember {
 	void SeekTarget (Vector3 d, bool isKtp) {
 
 		if (cutscene.isPraising) {
-			currentState = State.Awe;
+			SwitchToPraise();
 			return;
 		}
 

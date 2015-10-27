@@ -23,7 +23,7 @@ public class Ending : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		if (activated && transparency < 1f) {
-			transparency += 0.01f;
+			transparency += 0.005f;
 			GetComponent<Image>().color = new Color(1f, 1f, 1f, transparency);
 		}
 	}

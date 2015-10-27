@@ -119,6 +119,10 @@ public class SwarmMemberAI : SwarmMember {
 
 
 	protected override void Respawn () {
+		if (cutscene.isPraising) {
+			return;
+		}
+
 		currentState = State.Dead;
 		int w = NearestRespawnPoint;
 		GameObject g = (GameObject)MonoBehaviour.Instantiate(Resources.Load("Prefabs/Swarm Member"));
@@ -126,12 +130,6 @@ public class SwarmMemberAI : SwarmMember {
 		Vector2 r = UnityEngine.Random.insideUnitCircle * 5f;
 		g.GetComponent<Transform>().position = waypoints[w].position + new Vector3(r.x, 0f, r.y);
 		g.GetComponent<SwarmMemberAI>().currentWaypointIndex = w - 1;
-
-		
-
-		if (cutscene.isPraising) {
-			g.GetComponent<SwarmMemberAI>().currentState = State.Awe;
-		}
 	}
 
 

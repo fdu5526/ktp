@@ -61,7 +61,13 @@ public class Cutscene : MonoBehaviour {
 	 							 "Our lives for water!"
 	 							};
 	 	texts[3] = new string[]
-							 { "" };
+							 { "Is this it?",
+							 	 "We stood no chancce to begin with.",
+							 	 "Even though we are defeated,",
+							 	 "And our water taken,",
+							 	 "It is...",
+							 	 "so...",
+							 	 "Beautiful.", };
 
 
 	 	Invoke("Play", 0.1f);

@@ -62,13 +62,13 @@ public class Cutscene : MonoBehaviour {
 	 							};
 	 	texts[3] = new string[]
 							 { "Is this it?",
-							 	 "We stood no chancce to begin with.",
+							 	 "We stood no chance to begin with.",
 							 	 "Even though we are defeated,",
 							 	 "And our water taken,",
 							 	 "It is...",
 							 	 "so...",
-							 	 "Beautiful.", };
-
+							 	 "Beautiful.",
+							 	 "Nothing compares to her strength." };
 
 	 	Invoke("Play", 0.1f);
 	}

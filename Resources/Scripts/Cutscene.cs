@@ -128,7 +128,7 @@ public class Cutscene : MonoBehaviour {
 			}
 		}
 
-		string s = "Grunt #" + (int)UnityEngine.Random.Range(1,1000) + ": " + texts[currentChunkIndex][currentTextIndex];
+		string s = "Comrade #" + (int)UnityEngine.Random.Range(1,1000) + ": " + texts[currentChunkIndex][currentTextIndex];
 		text.GetComponent<Text>().text = s;
 		currentTextIndex++;
 	}
@@ -185,7 +185,7 @@ public class Cutscene : MonoBehaviour {
 
 	public void IncreaseDeathCount () { 
 		deathCount++;
-		GetComponent<Transform>().Find("Counter").gameObject.GetComponent<Text>().text = "Deaths: "  + deathCount;
+		GetComponent<Transform>().Find("Counter").gameObject.GetComponent<Text>().text = "Fallen Comrades Count: "  + deathCount;
 	}
 
 

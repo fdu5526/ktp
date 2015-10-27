@@ -15,9 +15,12 @@ public class Ktp : MonoBehaviour {
 	GameObject ktpAttack;
 	Animator animator;
 
+	public bool disabled;
+
 
 	// Use this for initialization
 	void Start () {
+		disabled = false;
 		waypoints = new Transform[6];
 		for (int i = 0; i < waypoints.Length; i++) {
 			waypoints[i] = GameObject.Find("Waypoints/Waypoint" + i).GetComponent<Transform>();
@@ -97,6 +100,7 @@ public class Ktp : MonoBehaviour {
 			int n = NearestRespawnPoint;
 			if (currentWaypointIndex == n) {
 				GameObject.Find("Fountain" + n).GetComponent<Fountain>().DryOut();
+				GameObject.Find("UI").GetComponent<Cutscene>().Play();
 			}
 			currentWaypointIndex++;
 		}
@@ -107,6 +111,9 @@ public class Ktp : MonoBehaviour {
 	
 	// Update is called once per frame
 	void FixedUpdate () {
+		if (disabled) {
+			return;
+		}
 
 		if (attackCooldownTimer.IsOffCooldown()) {
 			WalkToWaypoint();

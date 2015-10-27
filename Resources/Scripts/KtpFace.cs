@@ -23,6 +23,10 @@ public class KtpFace : MonoBehaviour {
 	void Update () {
 		Vector3 v = ktp.GetComponent<Rigidbody>().velocity;
 
+		if (v.sqrMagnitude < 0.2f) {
+			return;
+		}
+
 		if (isFacingDown) {
 			GetComponent<Canvas>().enabled = v.z > v.x;
 		} else {

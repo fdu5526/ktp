@@ -77,12 +77,14 @@ public class SwarmMember : MonoBehaviour {
     GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
     GetComponent<Transform>().eulerAngles = Vector3.zero;
     animator.SetInteger("currentState", 1);
+    GetComponent<Transform>().Find("Canvas").gameObject.SetActive(false);
   }
 
 
   public void Unpause () {
     currentState = State.RunToward;
     animator.SetInteger("currentState", (int)State.RunToward);
+    GetComponent<Transform>().Find("Canvas").gameObject.SetActive(true);
   }
 
 	void OnCollisionEnter (Collision collision) {

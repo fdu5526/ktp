@@ -15,9 +15,12 @@ public class Ending : MonoBehaviour {
 
 
 	public void Activate () {
-		activated = true;
-		transparency = 0f;
-		GetComponent<Image>().color = new Color(1f, 1f, 1f, transparency);
+		if (!activated) {
+			activated = true;
+			transparency = 0f;
+			GetComponent<Image>().color = new Color(1f, 1f, 1f, transparency);
+		}
+		
 	}
 	
 	// Update is called once per frame

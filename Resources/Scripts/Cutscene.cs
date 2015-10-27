@@ -108,7 +108,7 @@ public class Cutscene : MonoBehaviour {
 
 	void NextText () {
 		if (currentTextIndex == texts[currentChunkIndex].Length) {
-			if (currentChunkIndex == texts.Length - 1) {
+			if (currentChunkIndex == texts.Length - 1 && !ending) {
 				Ending();
 			} else {
 				EndCutscene();
@@ -213,10 +213,6 @@ public class Cutscene : MonoBehaviour {
 		if (isPlaying && 
 				Input.GetKeyDown("space")){
 			NextText();
-		}
-
-		if (Input.GetKeyDown("l")) {
-			SwitchToPraise();
 		}
 	}
 }

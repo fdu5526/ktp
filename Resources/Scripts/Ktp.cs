@@ -21,7 +21,7 @@ public class Ktp : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		disabled = false;
-		waypoints = new Transform[6];
+		waypoints = new Transform[7];
 		for (int i = 0; i < waypoints.Length; i++) {
 			waypoints[i] = GameObject.Find("Waypoints/Waypoint" + i).GetComponent<Transform>();
 		}
@@ -82,7 +82,7 @@ public class Ktp : MonoBehaviour {
 		get {
 			if (currentWaypointIndex <= 1) { return 1; }
 	    else if (currentWaypointIndex <= 3) { return 3; }
-	    else { return 5; }
+	    else { return 6; }
 		}
 	}
 
@@ -116,6 +116,10 @@ public class Ktp : MonoBehaviour {
 				GameObject.Find("Fountain" + n).GetComponent<Fountain>().DryOut();
 				GameObject.Find("UI").GetComponent<Cutscene>().Play();
 			}
+			if (currentWaypointIndex == 5) {
+				GameObject.Find("UI").GetComponent<Cutscene>().SwitchToPraise();
+			}
+
 			currentWaypointIndex++;
 		}
 	}

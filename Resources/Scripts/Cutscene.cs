@@ -4,17 +4,22 @@ using System.Collections;
 
 public class Cutscene : MonoBehaviour {
 	
+	public bool isPraising;
+
 	string[][] texts;
 	int currentChunkIndex;
 	float duration = 2.5f;
 
 	int currentTextIndex;
 
+	int deathCount;
+
 	bool ending;
 	bool isPlaying;
 
 	
 	GameObject text;
+	GameObject praisers;
 
 	// Use this for initialization
 	void Start () {
@@ -22,6 +27,10 @@ public class Cutscene : MonoBehaviour {
 		text = GetComponent<Transform>().Find("Text").gameObject;
 		ending = false;
 		isPlaying = false;
+		isPraising = false;
+
+		praisers = GameObject.Find("FinalSwarmMembers");
+		praisers.SetActive(false);
 
 
 		texts = new string[4][];
@@ -43,21 +52,16 @@ public class Cutscene : MonoBehaviour {
 	 							 "Block the paths!",
 	 							 "Maybe the 100 ton weights can stop her!"};
 	 	texts[2] = new string[]
-							 { "NOOOO!!!",
+							 { "It's hopeless!!!",
 	 							 "We only have 1 water fountain left!",
 	 							 "Protect it at all costs!",
-	 							 "This is our last resort!",
+	 							 "Use our last resort!",
 	 							 "Tackle the red explosive barrels!",
 	 							 "We will take her down with us!",
-	 							 "Protect our water at all costs!",
 	 							 "Our lives for water!"
 	 							};
 	 	texts[3] = new string[]
-							 { "Our water!",
-	 							 "It is all gone!",
-	 							 "...",
-		 						 "...",
-		 						 "..."};
+							 { "" };
 
 
 	 	Invoke("Play", 0.1f);
@@ -70,8 +74,6 @@ public class Cutscene : MonoBehaviour {
 			return;
 		}
 
-		isPlaying = true;
-
 		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
 		foreach (GameObject g in swarms) {
 			SwarmMember sm = g.GetComponent<SwarmMember>();
@@ -83,15 +85,31 @@ public class Cutscene : MonoBehaviour {
 			}
 		}
 
-		GetComponent<Canvas>().enabled = true;
+		GetComponent<Transform>().Find("TextBack").gameObject.GetComponent<UnityEngine.UI.Image>().enabled = true;
+		GetComponent<Transform>().Find("Text").gameObject.GetComponent<Text>().enabled = true;
 		GameObject.Find("Ktp").GetComponent<Ktp>().disabled = true;
 
 		currentChunkIndex++;
 		currentTextIndex = 0;
+		isPlaying = true;
+
+		if (currentChunkIndex != 0){
+			NextText();
+		}
+		
 	}
 
 
 	void NextText () {
+		if (currentTextIndex == texts[currentChunkIndex].Length) {
+			if (currentChunkIndex == texts.Length - 1) {
+				Ending();
+			} else {
+				EndCutscene();
+			}
+			return;
+		}
+
 		GetComponent<Transform>().Find("Start").gameObject.SetActive(false);
 		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
 		foreach (GameObject g in swarms) {
@@ -107,19 +125,12 @@ public class Cutscene : MonoBehaviour {
 		string s = "Grunt #" + (int)UnityEngine.Random.Range(1,1000) + ": " + texts[currentChunkIndex][currentTextIndex];
 		text.GetComponent<Text>().text = s;
 		currentTextIndex++;
-
-		if (currentTextIndex == texts[currentChunkIndex].Length) {
-			if (currentChunkIndex == texts.Length - 1) {
-				Ending();
-			} else {
-				EndCutscene();
-			}
-			
-		}
 	}
 
 	void EndCutscene () {
-		GetComponent<Canvas>().enabled = false;
+		GetComponent<Transform>().Find("TextBack").gameObject.GetComponent<UnityEngine.UI.Image>().enabled = false;
+		GetComponent<Transform>().Find("Text").gameObject.GetComponent<Text>().enabled = false;
+
 		GameObject.Find("Ktp").GetComponent<Ktp>().disabled = false;
 		isPlaying = false;
 
@@ -134,17 +145,51 @@ public class Cutscene : MonoBehaviour {
 		}
 	}
 
-
-	void Ending () {
-		ending = true;
-		GetComponent<Transform>().Find("Ending").gameObject.SetActive(true);
-		Invoke("ExitApp", 55f);
-		GetComponents<AudioSource>()[0].Play();
-
+	public void SwitchToPraise () {
 		AudioSource[] audios = GameObject.Find("Main Camera").GetComponents<AudioSource>();
 		for (int i = 0; i < audios.Length; i++) {
 			audios[i].Stop();
 		}
+
+		Invoke("PlayPraiseMusic", 2f);
+		praisers.SetActive(true);
+
+		GameObject.Find("FinalSwarmMembers").SetActive(true);
+
+		isPraising = true;
+		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
+		foreach (GameObject g in swarms) {
+			SwarmMember sm = g.GetComponent<SwarmMember>();
+			if (sm != null) {
+				if (sm.currentState != SwarmMember.State.Dead &&
+					  sm.currentState != SwarmMember.State.Disabled &&
+					  sm.currentState != SwarmMember.State.Awe &&
+					  g.GetComponent<Player>() == null) {
+					sm.Pause();
+					sm.currentState = SwarmMember.State.Awe;
+				}
+			}
+		}
+	}
+
+
+	void PlayPraiseMusic () {
+		GetComponents<AudioSource>()[0].Play();
+	}
+
+
+	public void IncreaseDeathCount () { 
+		deathCount++;
+		GetComponent<Transform>().Find("Counter").gameObject.GetComponent<Text>().text = "Deaths: "  + deathCount;
+
+	}
+
+
+	void Ending () {
+		ending = true;
+		GetComponent<Transform>().Find("Ending").gameObject.SetActive(true);
+		GetComponent<Transform>().Find("Ending").gameObject.GetComponent<Ending>().Activate();
+		Invoke("ExitApp", 55f);
 	}
 
 

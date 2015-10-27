@@ -21,7 +21,7 @@ public class DialogueText : MonoBehaviour {
 	void Start () {
 		Ktp = GameObject.Find("Ktp");
 
-		texts = new string[3][];
+		texts = new string[4][];
 		texts[0] = new string[]
 							 { "YAHHHHH!!!", 
 								 "To battle!", 
@@ -49,7 +49,8 @@ public class DialogueText : MonoBehaviour {
 								 "Yes we can!",
 								 "Stop her!",
 								 "We seek justice!",
-								 "We fear no enemy!"};
+								 "We fear no enemy!",
+								 "We are numberless!"};
 	 	texts[2] = new string[]
 	 					   { "Do not despair!",
 								 "We must stop her!",
@@ -67,6 +68,16 @@ public class DialogueText : MonoBehaviour {
 								 "Don't lose hope!",
 								 "Stay strong!",
 								 "I do not fear death!"};
+	 	texts[3] = new string[]
+	 					   { "She is stronger than us.",
+	 					 		 "All praise to KTP.",
+	 					 		 "We are powerless to her.",
+	 					 		 "All glory to KTP",
+	 					 		 "If we can't beat her, join her.",
+	 					 		 "We are nothing in front of her.",
+	 					 		 "We accept our defeat",
+	 					 		 "Our water is yours to take.",
+	 					 		 "Have mercy, Lord KTP!"};
 
 		durationTimer = new Timer(duration);
 		GetComponent<Text>().color = Color.clear;
@@ -78,7 +89,8 @@ public class DialogueText : MonoBehaviour {
       int w = Ktp.GetComponent<Ktp>().currentWaypointIndex;
       if (w <= 1) { return 0; }
       else if (w <= 3) { return 1; }
-      else { return 2; }
+      else if (w <= 5) { return 2; }
+      else { return 3; }
     }
   }
 

@@ -4,25 +4,27 @@ using System.Collections;
 
 public class Ending : MonoBehaviour {
 
-	Sprite s1, s2;
-	Timer timer;
-
-	bool isS1;
+	float transparency;
+	bool activated;
 
 	// Use this for initialization
 	void Start () {
-		isS1 = true;
-		s1 = Resources.Load<Sprite>("UI/ending1");
-		s2 = Resources.Load<Sprite>("UI/ending2");
-		timer = new Timer(0.2f);
+		transparency = 0f;
+		activated = false;
+	}
+
+
+	public void Activate () {
+		activated = true;
+		transparency = 0f;
+		GetComponent<Image>().color = new Color(1f, 1f, 1f, transparency);
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if (timer.IsOffCooldown()) {
-			GetComponent<Image>().sprite = isS1 ? s2 : s1;
-			isS1 = !isS1;
-			timer.Reset();
+		if (activated && transparency < 1f) {
+			transparency += 0.01f;
+			GetComponent<Image>().color = new Color(1f, 1f, 1f, transparency);
 		}
 	}
 }

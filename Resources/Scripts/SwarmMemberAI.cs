@@ -55,6 +55,11 @@ public class SwarmMemberAI : SwarmMember {
 
 	void SeekTarget (Vector3 d, bool isKtp) {
 
+		if (cutscene.isPraising) {
+			currentState = State.Awe;
+			return;
+		}
+
 		float sm = d.sqrMagnitude;
 		if (isKtp) {
 			// state transitions
@@ -121,6 +126,27 @@ public class SwarmMemberAI : SwarmMember {
 		Vector2 r = UnityEngine.Random.insideUnitCircle * 5f;
 		g.GetComponent<Transform>().position = waypoints[w].position + new Vector3(r.x, 0f, r.y);
 		g.GetComponent<SwarmMemberAI>().currentWaypointIndex = w - 1;
+
+		
+
+		if (cutscene.isPraising) {
+			g.GetComponent<SwarmMemberAI>().currentState = State.Awe;
+		}
+	}
+
+
+
+	void Praise () {
+		GetComponent<Transform>().Find("Canvas").gameObject.SetActive(true);
+
+		float theta = 0f;
+		Vector3 d = Ktp.GetComponent<Transform>().position - GetComponent<Transform>().position;
+		theta = Vector2.Angle(Vector2.up, new Vector2(d.x, d.z));
+  	theta = d.x < 0f ? -theta : theta;
+		
+  	GetComponent<Transform>().eulerAngles = new Vector3(0f, theta, 0f);
+
+  	animator.SetInteger("currentState", 1);
 	}
 
 
@@ -129,10 +155,10 @@ public class SwarmMemberAI : SwarmMember {
 		if (currentState == State.Dead ||
 				currentState == State.Pause) {
 			return;
-		}
-
-		if (currentState != State.Disabled &&
-				attackStunTimer.IsOffCooldown()) {
+		} else if (currentState == State.Awe) {
+			Praise();
+		} else if (currentState != State.Disabled &&
+							 attackStunTimer.IsOffCooldown()) {
 			bool b = false;
 			Vector3 d = FindTarget(ref b);
 			SeekTarget(d, b);

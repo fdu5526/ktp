@@ -3,7 +3,7 @@ using System.Collections;
 
 public class SwarmMember : MonoBehaviour {
 
-	public enum State { RunToward, Encircle, Tackle, Disabled, Dead, Pause}
+	public enum State { RunToward, Encircle, Tackle, Disabled, Dead, Pause, Awe}
 	public State currentState;
 
 	protected const float defaultSpeed = 10f;
@@ -21,6 +21,8 @@ public class SwarmMember : MonoBehaviour {
 	protected Timer respawnTimer;
 	protected Timer attackStunTimer;
 
+  protected Cutscene cutscene;
+
   // audios
   protected Animator animator;
   protected AudioSource[] audios;
@@ -34,11 +36,12 @@ public class SwarmMember : MonoBehaviour {
 		respawnTimer = new Timer(3f);
 		audios = GetComponents<AudioSource>();
 		Ktp = GameObject.Find("Ktp");
-    waypoints = new Transform[6];
+    waypoints = new Transform[7];
     for (int i = 0; i < waypoints.Length; i++) {
       waypoints[i] = GameObject.Find("Waypoints/Waypoint" + i).GetComponent<Transform>();
     }
     animator = GetComponent<Animator>();
+    cutscene = GameObject.Find("UI").GetComponent<Cutscene>();
 	}
 
   protected void Tackle () {
@@ -55,7 +58,7 @@ public class SwarmMember : MonoBehaviour {
       int w = Ktp.GetComponent<Ktp>().currentWaypointIndex;
       if (w <= 1) { return 1; }
       else if (w <= 3) { return 3; }
-      else { return 5; }
+      else { return 6; }
     }
   }
 
@@ -77,7 +80,9 @@ public class SwarmMember : MonoBehaviour {
     GetComponent<Rigidbody>().angularVelocity = Vector3.zero;
     GetComponent<Transform>().eulerAngles = Vector3.zero;
     animator.SetInteger("currentState", 1);
-    GetComponent<Transform>().Find("Canvas").gameObject.SetActive(false);
+    if (GetComponent<Transform>().Find("Canvas") != null) {
+      GetComponent<Transform>().Find("Canvas").gameObject.SetActive(false);
+    }
   }
 
 
@@ -95,6 +100,7 @@ public class SwarmMember : MonoBehaviour {
       if (currentState != State.Disabled &&
           currentState != State.Dead) {
         Invoke("Respawn", 3f);
+        cutscene.IncreaseDeathCount();
       }
       
       currentState = State.Disabled;

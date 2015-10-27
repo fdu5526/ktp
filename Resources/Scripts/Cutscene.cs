@@ -26,7 +26,7 @@ public class Cutscene : MonoBehaviour {
 		texts[0] = new string[]
 							 { "Here she comes!",
 							 	 "What is going on?",
-							 	 "Ktp is here to take our water!",
+							 	 "KTP is here to take our water!",
 	 							 "Be careful!",
 	 							 "But there is only one of her.",
 	 							 "Let's go get her!",

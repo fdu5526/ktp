@@ -58,7 +58,21 @@ public class Ktp : MonoBehaviour {
 				attackCooldownTimer.Reset();
 
 				Vector3 d = collider.gameObject.GetComponent<Transform>().position - GetComponent<Transform>().position;
-				Attack (d);
+				Attack(d);
+			}
+    }
+	}
+
+
+	void OnTriggerStay(Collider collider) {
+    int l = collider.gameObject.layer;
+    if (l == Helper.swarmLayer ||
+    		l == Helper.obstacleLayer) {
+			if (attackCooldownTimer.IsOffCooldown()) {
+				attackCooldownTimer.Reset();
+
+				Vector3 d = collider.gameObject.GetComponent<Transform>().position - GetComponent<Transform>().position;
+				Attack(d);
 			}
     }
 	}

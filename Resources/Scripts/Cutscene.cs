@@ -11,6 +11,7 @@ public class Cutscene : MonoBehaviour {
 	int currentTextIndex;
 
 	bool ending;
+	bool isPlaying;
 
 	
 	GameObject text;
@@ -20,6 +21,7 @@ public class Cutscene : MonoBehaviour {
 		currentChunkIndex = -1;
 		text = GetComponent<Transform>().Find("Text").gameObject;
 		ending = false;
+		isPlaying = false;
 
 
 		texts = new string[4][];
@@ -68,6 +70,8 @@ public class Cutscene : MonoBehaviour {
 			return;
 		}
 
+		isPlaying = true;
+
 		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
 		foreach (GameObject g in swarms) {
 			SwarmMember sm = g.GetComponent<SwarmMember>();
@@ -84,13 +88,6 @@ public class Cutscene : MonoBehaviour {
 
 		currentChunkIndex++;
 		currentTextIndex = 0;
-		for (int i = 0; i < texts[currentChunkIndex].Length; i++) {
-			if (currentChunkIndex == 0) {
-				Invoke("NextText", duration * (float)(i + 2));
-			} else {
-				Invoke("NextText", duration * (float)i);
-			}
-		}
 	}
 
 
@@ -107,7 +104,6 @@ public class Cutscene : MonoBehaviour {
 			}
 		}
 
-
 		string s = "Grunt #" + (int)UnityEngine.Random.Range(1,1000) + ": " + texts[currentChunkIndex][currentTextIndex];
 		text.GetComponent<Text>().text = s;
 		currentTextIndex++;
@@ -116,7 +112,7 @@ public class Cutscene : MonoBehaviour {
 			if (currentChunkIndex == texts.Length - 1) {
 				Ending();
 			} else {
-				Invoke("EndCutscene", duration);
+				EndCutscene();
 			}
 			
 		}
@@ -125,6 +121,7 @@ public class Cutscene : MonoBehaviour {
 	void EndCutscene () {
 		GetComponent<Canvas>().enabled = false;
 		GameObject.Find("Ktp").GetComponent<Ktp>().disabled = false;
+		isPlaying = false;
 
 		GameObject[] swarms = GameObject.FindGameObjectsWithTag("Swarm");
 		foreach (GameObject g in swarms) {
@@ -162,8 +159,9 @@ public class Cutscene : MonoBehaviour {
 			ExitApp();
 		}
 
-		if (Input.GetKeyDown("l")){
-			Play();
+		if (isPlaying && 
+				Input.GetKeyDown("space")){
+			NextText();
 		}
 	}
 }
